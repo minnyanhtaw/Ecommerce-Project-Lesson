@@ -1,4 +1,6 @@
+import { products } from "../core/data.js";
 import { categoryGroup, categoryTemplate } from "../core/selectors.js";
+import { renderProdcut } from "./product.js";
 
 export const createCategory = (categoryName) => {
   const template = categoryTemplate.content.cloneNode(true);
@@ -9,4 +11,17 @@ export const createCategory = (categoryName) => {
 
 export const renderCategory = (categories) => {
   categories.forEach((cat) => categoryGroup.append(createCategory(cat)));
+};
+
+export const handlerCategoryGroup = (event) => {
+  if (event.target.classList.contains("cat-btn")) {
+    const currentCategory = event.target.innerText;
+    console.log(currentCategory);
+    renderProdcut(
+      products.filter(
+        (el) => el.category === currentCategory || currentCategory === "All"
+      )
+    );
+  }
+  
 };
