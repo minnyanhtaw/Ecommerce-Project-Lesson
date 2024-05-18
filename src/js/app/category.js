@@ -15,6 +15,11 @@ export const renderCategory = (categories) => {
 
 export const handlerCategoryGroup = (event) => {
   if (event.target.classList.contains("cat-btn")) {
+    const currentCategoryBtn = event.target;
+
+    document.querySelector(".cat-btn.active").classList.remove("active");
+    currentCategoryBtn.classList.add("active");
+
     const currentCategory = event.target.innerText;
     console.log(currentCategory);
     renderProdcut(
@@ -23,5 +28,4 @@ export const handlerCategoryGroup = (event) => {
       )
     );
   }
-  
 };
