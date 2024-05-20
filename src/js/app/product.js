@@ -81,7 +81,7 @@ export const handlerProductGroup = (event) => {
     const currentProduct = products.find(
       (product) => product.id === currentProductCardId
     );
-    console.log(currentProduct);
+    // console.log(currentProduct);
 
     const currentProductImg = currentProductCard.querySelector(".product-img");
 
@@ -96,7 +96,7 @@ export const handlerProductGroup = (event) => {
       currentProductImg.getBoundingClientRect().width + "px";
     animateImg.style.height =
       currentProductImg.getBoundingClientRect().height + "px";
-    console.log(animateImg);
+    // console.log(animateImg);
     document.body.append(animateImg);
 
     const keyframe = [

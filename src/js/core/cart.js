@@ -65,7 +65,7 @@ export const handlerCartItemGroup = (event) => {
           `[product-id='${currentProductId}']`
         );
 
-        console.log(currentProduct);
+        // console.log(currentProduct);
 
         const currentProductAddCartBtn = currentProduct.querySelector(
           ".product-add-cart-btn"
@@ -105,14 +105,15 @@ export const handlerCartItemGroup = (event) => {
     updateCartTotal();
     // console.log(calculateCartCoastTotal());
     // console.log(currentQuantity);
-    console.log("q add");
+    // console.log("q add");
   } else if (event.target.classList.contains("cart-q-sub")) {
+    // console.log("cart q sub");
     const currentCart = event.target.closest(".cart-item");
     const currentPrice = currentCart.querySelector(".cart-item-price");
     const currentQuantity = currentCart.querySelector(".product-quantity");
     const currentCoast = currentCart.querySelector(".cart-item-coast");
 
-    if (currentQuantity > 1) {
+    if (currentQuantity.innerText > 1) {
       currentQuantity.innerText = parseInt(currentQuantity.innerText) - 1;
       currentCoast.innerText = (
         currentPrice.innerText * currentQuantity.innerText
