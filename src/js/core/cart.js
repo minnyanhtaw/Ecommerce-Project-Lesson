@@ -40,6 +40,55 @@ export const calculateCartCoastTotal = () => {
   return total;
 };
 
+export const removeCartItem = (event) => {
+  const currentCart = event.target.closest(".cart-item");
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      currentCart.remove();
+
+      const currentProductId = currentCart.getAttribute("cart-product-id");
+
+      // console.log(currentProductId);
+      const currentProduct = productGroup.querySelector(
+        `[product-id='${currentProductId}']`
+      );
+
+      const currentProductBtn = currentProduct.querySelector(
+        ".product-add-cart-btn"
+      );
+
+      currentProductBtn.removeAttribute("disabled");
+      currentProductBtn.innerText = "Add To Cart";
+      // console.log(currentProduct);
+      updateCartTotal();
+      updateCartItemCount();
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-start",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Remove record successfully",
+      });
+    }
+  });
+};
+
 export const updateCartTotal = () => {
   const total = calculateCartCoastTotal().toFixed(2);
   cartTotal.innerText = total;
@@ -48,49 +97,7 @@ export const updateCartTotal = () => {
 export const handlerCartItemGroup = (event) => {
   if (event.target.classList.contains("cart-item-remove")) {
     const currentCart = event.target.closest(".cart-item");
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        currentCart.remove();
-        const currentProductId = currentCart.getAttribute("cart-product-id");
-        const currentProduct = productGroup.querySelector(
-          `[product-id='${currentProductId}']`
-        );
-
-        // console.log(currentProduct);
-
-        const currentProductAddCartBtn = currentProduct.querySelector(
-          ".product-add-cart-btn"
-        );
-        currentProductAddCartBtn.removeAttribute("disabled");
-        currentProductAddCartBtn.innerText = "Add to Cart";
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "bottom-start",
-          showConfirmButton: false,
-          timer: 1000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Remove record successfully",
-        });
-        updateCartTotal();
-        updateCartItemCount();
-      }
-    });
+    removeCartItem(event);
   } else if (event.target.classList.contains("cart-q-add")) {
     // console.log("U click add btn");
     const currentCart = event.target.closest(".cart-item");
@@ -118,6 +125,9 @@ export const handlerCartItemGroup = (event) => {
       currentCoast.innerText = (
         currentPrice.innerText * currentQuantity.innerText
       ).toFixed(2);
+      updateCartTotal();
+    } else {
+      removeCartItem(event);
       updateCartTotal();
     }
   }
